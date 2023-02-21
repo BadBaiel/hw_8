@@ -1,22 +1,23 @@
-<!DOCTYPE html>
-<html lang="en-ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Book_Full</title>
-</head>
-<body>
-
+{% include 'header.html' %}
 <center>
-    <h1>Название книги:<br>{{book_id.title}}</h1>
-    <p>Описание книги:<br>{{book_id.description}}</p>
-    <p>Количество страниц:<br>{{book_id.quantity}}</p>
-    <img src="{{book_id.image.url}}" alt="" width="300" height="400">
-    <p>Жанр:<br>{{book_id.genre}}</p>
-    <a href="{{book_id.link}}">Ссылка на покупку книги --></a>
-    <p>Цена:<br>{{book_id.price}} сом</p>
-    <p>Дата публикации: {{book_id.created_dates}}</p>
-    <p>Дата обновления: {{book_id.updated_dates}}</p>
+    <br>
+    <hr>
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h3 class="card-title">{{books_id.title}}</h3>
+    <img src="{{books_id.image.url}}" alt="" width="200" height="300">
+    <h6 class="card-subtitle mb-2 text-muted">Количество страниц: {{books_id.quantity}}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">Цена: {{books_id.price}} сом</h6>
+    <p class="card-text">{{books_id.description}}</p>
+    <p class="card-link">Жанр: {{books_id.genre}}</p>
+    <h6 class="card-subtitle mb-2 text-muted">Возрастное ограничение: {{books_id.age_limit}}+</h6>
+    <a href="{{books_id.link}}">Купить книгу!</a>
+    <p>Дата публикации: {{books_id.created_dates}}</p>
+    <p>Дата обновления: {{books_id.updated_dates}}</p>
+  </div>
+</div>
+    <br>
+    <hr>
 </center>
 
-</body>
-</html>
+{% include 'footer.html' %}
