@@ -17,7 +17,7 @@ class Book(models.Model):
     title = models.CharField('Название книги:', max_length=200, null=True)
     description = models.TextField('Описание книги:', null=True)
     quantity = models.PositiveIntegerField('Количество страниц:', null=True)
-    image = models.ImageField('Фото книги:', upload_to='', null=True, blank=True)
+    image = models.ImageField('Фото книги:', upload_to='', null=True)
     genre = models.CharField('Жанр:', max_length=100, choices=GENRE, null=True)
     link = models.URLField('Ссылка на книгу:', null=True)
     price = models.PositiveIntegerField('Цена:', null=True)
