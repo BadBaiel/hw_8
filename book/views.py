@@ -1,58 +1,82 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from . import models, forms
-from django.http import HttpResponse
+from django.views import generic
 
 
-def books(request):
+class BooksView(generic.ListView):
     """
-        Вывод неполной информации
+    Вывод неполной информации
     """
-    books = models.Book.objects.all()
-    return render(request, 'books.html', {'books': books})
+    template_name = 'books.html'
+    queryset = models.Book.objects.all()
+
+    def get_queryset(self):
+        return models.Book.objects.all()
 
 
-def book_full_view(request, id):
+class BooksFullView(generic.DetailView):
     """
-        Вывод полной информации по id
+    Вывод полной информации по id
     """
-    books_id = get_object_or_404(models.Book, id=id)
-    return render(request, 'books_detail.html', {'books_id': books_id})
+    template_name = 'books_detail.html'
+
+    def get_object(self, **kwargs):
+        books_id = self.kwargs.get('id')
+        return get_object_or_404(models.Book, id=books_id)
 
 
-def delete_books(request, id):
-    show_object = get_object_or_404(models.Book, id=id)
-    show_object.delete()
-    return HttpResponse('<h2>Книга успешна удалена</h2>')
-
-
-def books_create_id(request):
+class BooksCreateView(generic.CreateView):
     """
-        Функция для добавления фильма через формы
+    Функция для добавления книг в базу данных
     """
-    method = request.method
-    if method == "POST":
-        form = forms.BooksForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('<h2>Список книг успешно обновлен!</h2>')
+    template_name = 'add_books.html'
+    form_class = forms.BooksForm
+    queryset = models.Book.objects.all()
+    success_url = '/book/'
 
-    else:
-        form = forms.BooksForm()
-
-    return render(request, 'add_books.html', {'form': form})
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(BooksCreateView, self).form_valid(form=form)
 
 
-def update_books(request, id):
-    books_object = get_object_or_404(models.Book, id=id)
-    if request.method == 'POST':
-        form = forms.BooksForm(instance=books_object, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('<h2>Книга успешна обновлена</h2>')
-    else:
-        form = forms.BooksForm(instance=books_object)
+class BooksUpdateView(generic.UpdateView):
+    """
+    Функция для изменения данных о книге
+    """
+    template_name = 'update_books.html'
+    form_class = forms.BooksForm
+    success_url = '/book/'
 
-    return render(request, 'update_books.html', {
-                                                    'form': form,
-                                                    'object': books_object
-                                                   })
+    def get_object(self, **kwargs):
+        books_id = self.kwargs.get('id')
+        return get_object_or_404(models.Book, id=books_id)
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(BooksUpdateView, self).form_valid(form=form)
+
+
+class BooksDeleteView(generic.DeleteView):
+    """
+    Функция для удаления книги
+    """
+    template_name = 'books_delete.html'
+    success_url = '/book/'
+
+    def get_object(self, **kwargs):
+        books_id = self.kwargs.get('id')
+        return get_object_or_404(models.Book, id=books_id)
+
+
+class CreateCommentView(generic.CreateView):
+    """
+    Функция для добавления отзыва к книге
+    """
+    template_name = 'form_for_comment.html'
+    form_class = forms.CommentForm
+    queryset = models.RatingBook.objects.all()
+    success_url = '/book/'
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(CreateCommentView, self).form_valid(form=form)
