@@ -102,7 +102,6 @@ class RegistrationForm(UserCreationForm):
     sabg_type = forms.ChoiceField(choices=SABG_TYPE, required=True)
     place_of_residence = forms.CharField(required=True)
     telegramm = forms.CharField(required=True)
-    pass_admins = forms.CharField(required=False)
 
     class Meta:
         model = models.CustomUser
@@ -122,7 +121,6 @@ class RegistrationForm(UserCreationForm):
             "sabg_type",
             "place_of_residence",
             "telegramm",
-            "pass_admins",
         )
 
     def save(self, commit=True):
