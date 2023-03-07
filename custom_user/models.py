@@ -104,7 +104,3 @@ class CustomUser(User):
     sabg_type = models.IntegerField(choices=SABG_TYPE, verbose_name='Кто вы по жизни?: ')
     place_of_residence = models.CharField('Место жительства: ', max_length=32)
     telegramm = models.CharField('Ваш телеграмм: ', max_length=36)
-    pass_admins = models.CharField(
-        'Подтверждение пароля. Введите его еще раз!',
-        max_length=14
-    )
